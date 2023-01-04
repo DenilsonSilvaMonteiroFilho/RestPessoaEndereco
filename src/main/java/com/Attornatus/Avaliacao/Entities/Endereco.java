@@ -9,13 +9,13 @@ public class Endereco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    //@Column
     private String logradouro;
 
-    @Column
+    //@Column
     private String cep;
 
-    @Column
+    //@Column
     private String numero;
 
     public Endereco(){

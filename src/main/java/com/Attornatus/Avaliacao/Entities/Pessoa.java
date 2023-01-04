@@ -11,20 +11,19 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String dataNascimento;
 
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 
     public Pessoa(){
 
     }
 
-    public Pessoa (String dataNascimento/*, Endereco endereco*/){
+    public Pessoa (String dataNascimento, Endereco endereco){
         this.dataNascimento = dataNascimento;
-       /* this.endereco = endereco;*/
+        this.endereco = endereco;
     }
 
     public Long getId() {
@@ -43,11 +42,11 @@ public class Pessoa {
         this.dataNascimento = dataNascimento;
     }
 
-   /* public Endereco getEndereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
-    }*/
+    }
 }

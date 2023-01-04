@@ -36,7 +36,7 @@ public class PessoaController {
 
         return pessoaRepository.findById(id).map(pessoa -> {
             pessoa.setDataNascimento(newPessoa.getDataNascimento());
-            //pessoa.setEndereco(newPessoa.getEndereco()); Nescessario emplementar o relacionamenteo endereco
+            pessoa.setEndereco(newPessoa.getEndereco());
             return pessoaRepository.save(pessoa);
         }).orElseGet(()->{
             newPessoa.setId(id);
