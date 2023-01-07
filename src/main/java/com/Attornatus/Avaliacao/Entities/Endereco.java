@@ -6,16 +6,14 @@ import jakarta.persistence.*;
 public class Endereco {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     //@Column
     private String logradouro;
 
-    //@Column
     private String cep;
 
-    //@Column
     private String numero;
 
     public Endereco(){

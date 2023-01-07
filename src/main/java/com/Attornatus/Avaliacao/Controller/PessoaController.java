@@ -1,6 +1,8 @@
 package com.Attornatus.Avaliacao.Controller;
 
+import com.Attornatus.Avaliacao.Entities.Endereco;
 import com.Attornatus.Avaliacao.Entities.Pessoa;
+import com.Attornatus.Avaliacao.Repository.EnderecoRepository;
 import com.Attornatus.Avaliacao.Repository.PessoaRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +12,11 @@ import java.util.List;
 public class PessoaController {
 
     private final PessoaRepository pessoaRepository;
+    private EnderecoController enderecoController;
 
-    public PessoaController(PessoaRepository pessoaRepository){
+    public PessoaController(PessoaRepository pessoaRepository, EnderecoController enderecoController){
         this.pessoaRepository = pessoaRepository;
+        this.enderecoController = enderecoController;
     }
 
 
@@ -35,6 +39,7 @@ public class PessoaController {
     Pessoa alteraPessoa(@RequestBody Pessoa newPessoa, @PathVariable Long id){
 
         return pessoaRepository.findById(id).map(pessoa -> {
+            pessoa.setNome(newPessoa.getNome());
             pessoa.setDataNascimento(newPessoa.getDataNascimento());
             pessoa.setEndereco(newPessoa.getEndereco());
             return pessoaRepository.save(pessoa);
