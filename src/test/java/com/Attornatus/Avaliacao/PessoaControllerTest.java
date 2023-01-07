@@ -1,11 +1,9 @@
 package com.Attornatus.Avaliacao;
 
-import com.Attornatus.Avaliacao.Controller.PessoaController;
 import com.Attornatus.Avaliacao.Entities.Data;
 import com.Attornatus.Avaliacao.Entities.Endereco;
 import com.Attornatus.Avaliacao.Entities.Pessoa;
 import com.Attornatus.Avaliacao.Repository.PessoaRepository;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
