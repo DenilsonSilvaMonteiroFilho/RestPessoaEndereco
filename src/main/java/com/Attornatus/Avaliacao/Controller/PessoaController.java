@@ -1,9 +1,8 @@
 package com.Attornatus.Avaliacao.Controller;
 
-import com.Attornatus.Avaliacao.Entities.Endereco;
 import com.Attornatus.Avaliacao.Entities.Pessoa;
-import com.Attornatus.Avaliacao.Repository.EnderecoRepository;
 import com.Attornatus.Avaliacao.Repository.PessoaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +11,9 @@ import java.util.List;
 public class PessoaController {
 
     private final PessoaRepository pessoaRepository;
-    private EnderecoController enderecoController;
 
-    public PessoaController(PessoaRepository pessoaRepository, EnderecoController enderecoController){
+    public PessoaController(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
-        this.enderecoController = enderecoController;
     }
 
 
