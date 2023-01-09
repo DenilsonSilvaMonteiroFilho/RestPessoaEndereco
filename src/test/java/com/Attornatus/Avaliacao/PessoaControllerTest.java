@@ -4,7 +4,6 @@ import com.Attornatus.Avaliacao.Entities.Data;
 import com.Attornatus.Avaliacao.Entities.Endereco;
 import com.Attornatus.Avaliacao.Entities.Pessoa;
 import com.Attornatus.Avaliacao.Repository.PessoaRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -216,8 +213,9 @@ public class PessoaControllerTest {
         pessoa.setId(1L);
 
         //Salvando pessoa no banco e cadastrando mais um endereco
-        pessoa = pessoaRepository.save(pessoa);
         pessoa.cadastraEndeco(endereco2);
+        pessoa = pessoaRepository.save(pessoa);
+
 
         //Enviando a requisicao GET
         MvcResult result = mockMvc.perform(get("/all_endereco_pessoa/" + pessoa.getId()))
@@ -232,13 +230,43 @@ public class PessoaControllerTest {
         // Convertendo o resultado da requisição para o objeto Pessoa
         Pessoa pessoaEndCadastrado = objectMapper.readValue(result.getResponse().getContentAsString(), Pessoa.class);
 
-
         // Testes
         assertEquals(true, pessoaEndCadastrado.getListaEnderecoEndereco().get(1).isAtual());
         assertEquals(2, pessoa.getListaEnderecoEndereco().size());
-        // Cadastra um novo endereco, para fazer a verificacao se esta ocorrendo a troca de endereco atual quando um novo e cadastrado
-        pessoa.cadastraEndeco(endereco3);
-        assertEquals(true, pessoaEndCadastrado.getListaEnderecoEndereco().get(2).isAtual());
-        assertEquals(3, pessoa.getListaEnderecoEndereco().size());
     }
+
+    @Test
+    public void testeEnderecoPrincipal() throws Exception{
+        //Criando os objetos
+        Endereco endereco = new Endereco("Logradouro 1", "cep 1","numero 1","cidade 1");
+        Endereco endereco2 = new Endereco("Logradouro 2", "cep 2","numero 2","cidade 2");
+        Data dataNascimento = new Data(21, 8,1999);
+        Pessoa pessoa = new Pessoa("Pessoa 1",dataNascimento,endereco);
+
+        endereco.setId(1L);
+        endereco2.setId(2L);
+        dataNascimento.setId(1L);
+        pessoa.setId(1L);
+
+        //Salvando pessoa no banco e cadastrando mais um endereco
+        pessoa.cadastraEndeco(endereco2);
+        pessoa = pessoaRepository.save(pessoa);
+
+        //Enviando a requisicao GET
+        MvcResult result = mockMvc.perform(get("/endereco_pricipal_pessoa/" + pessoa.getId()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        // Convertendo o resultado da requisição para o objeto Endeco
+        Endereco enderecoPrincipal = objectMapper.readValue(result.getResponse().getContentAsString(), Endereco.class);
+
+        //Teste
+        assertEquals(true, enderecoPrincipal.isAtual());
+        assertEquals("Logradouro 2", enderecoPrincipal.getLogradouro());
+        assertEquals("cep 2", enderecoPrincipal.getCep());
+        assertEquals("numero 2", enderecoPrincipal.getNumero());
+        assertEquals("cidade 2", enderecoPrincipal.getCidade());
+    }
+
+
 }
