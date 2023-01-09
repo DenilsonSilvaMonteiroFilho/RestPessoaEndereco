@@ -76,15 +76,9 @@ public class Pessoa {
         this.listaEndereco = newListEndereco;
     }
 
-    public Endereco setEnderecoById( Endereco endereco, Long id) {
-        for(Endereco enderecolist: this.listaEndereco){
-            if (enderecolist.getId().equals(endereco.getId())){
-                return enderecolist = endereco;
-            }
-        }
-        return null;
-    }
 
+    //Metodo que cadastra um endereco a lista de endereco do objeto pessoa
+    //Cada endereco novo sera o endereco atual da pessoa
     public Endereco cadastraEndeco(Endereco endereco){
         Endereco enderecoCadastrar = new Endereco(endereco.getLogradouro()
                 ,endereco.getCep(), endereco.getNumero(), endereco.getCidade());
@@ -93,6 +87,8 @@ public class Pessoa {
         return endereco;
     }
 
+    //Metedo que atualiza endereco atual
+    //Ele percorre a lista de endereco, mudando todos para false, no ultimo index sera o atual
     public boolean attEnderecoAtual(){
         for(Endereco ende: this.listaEndereco){
            if(ende.isAtual()){
@@ -103,6 +99,8 @@ public class Pessoa {
         return false;
     }
 
+
+    //Metodo que entrega o endereco atual do objeto pessoa
     public Endereco enderecoAtual(){
         for(Endereco end: this.listaEndereco){
             if(end.isAtual()){
