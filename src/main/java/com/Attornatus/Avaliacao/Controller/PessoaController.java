@@ -1,11 +1,13 @@
 package com.Attornatus.Avaliacao.Controller;
 
+import com.Attornatus.Avaliacao.Entities.Endereco;
 import com.Attornatus.Avaliacao.Entities.Pessoa;
+import com.Attornatus.Avaliacao.NotFound.PessoaNotFoundException;
 import com.Attornatus.Avaliacao.Repository.PessoaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class PessoaController {
@@ -24,7 +26,8 @@ public class PessoaController {
 
     @GetMapping("/pessoa_ById/{id}")
     Pessoa onePessoa(@PathVariable Long id){
-        return pessoaRepository.findById(id).orElseThrow();
+        return pessoaRepository.findById(id).
+                orElseThrow(() -> new PessoaNotFoundException(id));
     }
 
     @PostMapping("/cadastra_pessoa")
@@ -38,7 +41,7 @@ public class PessoaController {
         return pessoaRepository.findById(id).map(pessoa -> {
             pessoa.setNome(newPessoa.getNome());
             pessoa.setDataNascimento(newPessoa.getDataNascimento());
-            pessoa.setEndereco(newPessoa.getEndereco());
+            pessoa.setListaEndereco(newPessoa.getListaEnderecoEndereco());
             return pessoaRepository.save(pessoa);
         }).orElseGet(()->{
             newPessoa.setId(id);
@@ -49,5 +52,27 @@ public class PessoaController {
     @DeleteMapping("/deleta_pessoa/{id}")
     void deletaPessoa(@PathVariable Long id){
         pessoaRepository.deleteById(id);
+    }
+
+    //Operacoes para endereco
+    @PostMapping("/cadastra_endereco/{id}")
+    List <Endereco> cadastraEndereco(@RequestBody Endereco newEndereco,@PathVariable Long id){
+        return pessoaRepository.findById(id).map(pessoa -> {
+            pessoa.cadastraEndeco(newEndereco);
+            pessoaRepository.save(pessoa);
+            return pessoa.getListaEnderecoEndereco();
+        }).orElseThrow(() -> new PessoaNotFoundException(id));
+    }
+
+    @GetMapping("/all_endereco_pessoa/{id}")
+    List<Endereco> enderecosPessoa(@PathVariable Long id){
+        return pessoaRepository.findById(id).map(pessoa -> pessoa.getListaEnderecoEndereco())
+                .orElseThrow(() -> new PessoaNotFoundException(id));
+    }
+
+    @GetMapping("/endereco_pricipal_pessoa/{id}")
+    Endereco eddePrincipal(@PathVariable Long id){
+        return pessoaRepository.findById(id).map(pessoa -> pessoa.enderecoAtual())
+                .orElseThrow(() -> new PessoaNotFoundException(id));
     }
 }

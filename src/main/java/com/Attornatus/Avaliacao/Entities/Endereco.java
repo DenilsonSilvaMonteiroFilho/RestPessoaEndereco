@@ -16,13 +16,18 @@ public class Endereco {
 
     private String numero;
 
+    private String cidade;
+
+    private boolean atual;
+
     public Endereco(){
     }
 
-    public Endereco(String logradouro, String cep, String numero){
+    public Endereco(String logradouro, String cep, String numero, String cidade){
         this.logradouro = logradouro;
         this.cep = cep;
         this.numero = numero;
+        this.cidade = cidade;
     }
 
     public Long getId() {
@@ -55,5 +60,21 @@ public class Endereco {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public boolean isAtual() {
+        return atual;
+    }
+
+    public void setAtual(boolean atual) {
+        this.atual = atual;
     }
 }
